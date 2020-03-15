@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 
 @RestController
@@ -25,9 +27,13 @@ public class Controller {
         return new StreamingResponseBody() {
             @Override
             public void writeTo(OutputStream out) throws IOException {
-                for (int i = 0; i < 1000; i++) {
-                    out.write((i + " - ").getBytes());
-                    out.flush();
+                final InputStream inputStream = new FileInputStream("pic.jpg");
+
+                final byte[] bytes = new byte[1024];
+                int length;
+                while ((length = inputStream.read(bytes)) >= 0) {
+                    out.write(bytes, 0, length);
+
                     try {
                         Thread.sleep(5);
 
