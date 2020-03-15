@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 @RestController
 public class Controller {
@@ -23,10 +25,13 @@ public class Controller {
 
     @GetMapping("/store")
     public void read(HttpServletResponse response) throws IOException {
-        IOUtils.copy(new FileInputStream(new File("pic.jpg")), response.getOutputStream());
-        for(int i = 0; i < 10; i++){
-            IOUtils.copy(new FileInputStream(new File("Photo.jpeg")), response.getOutputStream());
-        }
+        final InputStream inputStream = new FileInputStream(new File("pic.jpg"));
+        final OutputStream outputStream = response.getOutputStream();
+
+        IOUtils.copy(inputStream, outputStream);
+
+        inputStream.close();
+        outputStream.close();
     }
 
     @PostMapping("/store")
