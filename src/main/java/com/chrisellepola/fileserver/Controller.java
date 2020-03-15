@@ -24,6 +24,9 @@ public class Controller {
     @GetMapping("/store")
     public void read(HttpServletResponse response) throws IOException {
         IOUtils.copy(new FileInputStream(new File("pic.jpg")), response.getOutputStream());
+        for(int i = 0; i < 10; i++){
+            IOUtils.copy(new FileInputStream(new File("Photo.jpeg")), response.getOutputStream());
+        }
     }
 
     @PostMapping("/store")
