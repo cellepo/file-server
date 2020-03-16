@@ -1,6 +1,7 @@
 package com.chrisellepola.fileserver;
 
 import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,7 +26,7 @@ public class Controller {
 
     @GetMapping("/store")
     public void read(HttpServletResponse response) throws IOException {
-        final InputStream inputStream = new FileInputStream(new File("pic.jpg"));
+        final InputStream inputStream = (new ClassPathResource("pic.jpg")).getInputStream();
         final OutputStream outputStream = response.getOutputStream();
 
         IOUtils.copy(inputStream, outputStream);
