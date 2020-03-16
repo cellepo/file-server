@@ -3,6 +3,8 @@ package com.chrisellepola.fileserver;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,6 +39,18 @@ public class Controller {
 
         } catch(IOException ioe){
             response.setStatus(HttpStatus.NOT_FOUND.value());
+        }
+    }
+
+    @DeleteMapping("/store/{fileName}")
+    public ResponseEntity<Void> delete(@PathVariable String fileName){
+        if(     ! fileName.isEmpty()
+            &&  (new File("src/main/resources/" + fileName)).delete()){
+
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+
+        } else {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
     }
 
