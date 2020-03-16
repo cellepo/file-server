@@ -25,14 +25,19 @@ public class Controller {
     }
 
     @GetMapping("/store/{fileName}")
-    public void read(@PathVariable String fileName, HttpServletResponse response) throws IOException {
-        final InputStream inputStream = (new ClassPathResource(fileName)).getInputStream();
-        final OutputStream outputStream = response.getOutputStream();
+    public void read(@PathVariable String fileName, HttpServletResponse response) {
+        try {
+            final InputStream inputStream = (new ClassPathResource(fileName)).getInputStream();
+            final OutputStream outputStream = response.getOutputStream();
 
-        IOUtils.copy(inputStream, outputStream);
+            IOUtils.copy(inputStream, outputStream);
 
-        inputStream.close();
-        outputStream.close();
+            inputStream.close();
+            outputStream.close();
+
+        } catch(IOException ioe){
+            response.setStatus(HttpStatus.NOT_FOUND.value());
+        }
     }
 
     @PostMapping("/store")
