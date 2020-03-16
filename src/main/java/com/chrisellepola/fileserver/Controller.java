@@ -26,6 +26,18 @@ public class Controller {
 
     }
 
+    @PostMapping("/store/{fileName}")
+    public ResponseEntity<Void> create(@PathVariable String fileName){
+        try {
+            (new File(fileName)).createNewFile();
+
+            return new ResponseEntity(HttpStatus.OK);
+
+        } catch(IOException ioe){
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @GetMapping("/store/{fileName}")
     public void read(@PathVariable String fileName, HttpServletResponse response) {
         try {
